@@ -56,12 +56,10 @@ jobs:
         from os import environ
         from sqlalchemy import create_engine
 
-        cnx_str = environ.get("DB_CONNECTION_STRING")
+        cnx_str = "postgres://postgres:postgres_password@postgres:5432/postgres"
         engine = create_engine(cnx_str)
 
         with engine.connect() as con:
           rs = con.execute("SELECT table_name FROM information_schema.tables")
           for row in rs:
               print(row)
-      env:
-        DB_CONNECTION_STRING: "postgres://postgres:postgres_password@postgres:5432/postgres"
