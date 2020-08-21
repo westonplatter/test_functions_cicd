@@ -53,12 +53,4 @@ jobs:
         if [ -f functions/dev-requirements.txt ]; then pip install -r functions/dev-requirements.txt; fi
     - name: Test with pytest
       run: |
-        from sqlalchemy import create_engine
-
-        cnx_str = "postgres://postgres:postgres_password@postgres:5432/postgres"
-        engine = create_engine(cnx_str)
-
-        with engine.connect() as con:
-          rs = con.execute("SELECT table_name FROM information_schema.tables")
-          for row in rs:
-              print(row)
+        pytest
