@@ -53,7 +53,6 @@ jobs:
         if [ -f functions/dev-requirements.txt ]; then pip install -r functions/dev-requirements.txt; fi
     - name: Test with pytest
       run: |
-        from os import environ
         from sqlalchemy import create_engine
 
         cnx_str = "postgres://postgres:postgres_password@postgres:5432/postgres"
