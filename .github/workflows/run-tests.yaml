@@ -22,9 +22,9 @@ jobs:
       with:
         path: ~/.cache/pip
         key: |
-          ${{ runner.os }}-
-          pip-
-          ${{ hashFiles('functions/requirements.txt') }}-
+          ${{ runner.os }}-\
+          pip-\
+          ${{ hashFiles('functions/requirements.txt') }}-\
           ${{ hashFiles('functions/dev-requirements.txt')}}
         restore-keys: |
           ${{ runner.os }}-pip-
