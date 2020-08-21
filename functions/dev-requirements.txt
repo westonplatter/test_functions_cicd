@@ -1,0 +1,6 @@
+invoke==1.4.1
+black==19.10b0
+jupyter==1.0.0
+pytest==5.4.1
+PyYAML==5.3.1
+
