@@ -8,6 +8,6 @@ def test_x():
 
     with engine.connect() as con:
         result = con.execute("SELECT table_name FROM information_schema.tables")
-        rows = [x for x in resylt]
+        rows = [x for x in result]
 
     assert len(rows) > 1
