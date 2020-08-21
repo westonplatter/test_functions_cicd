@@ -10,6 +10,22 @@ jobs:
       matrix:
         python-version: [3.7, 3.8]
 
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres:12
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres_password
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -37,4 +53,15 @@ jobs:
         if [ -f functions/dev-requirements.txt ]; then pip install -r functions/dev-requirements.txt; fi
     - name: Test with pytest
       run: |
-        pytest
+        from os import environ
+        from sqlalchemy import create_engine
+
+        cnx_str = environ.get("DB_CONNECTION_STRING")
+        engine = create_engine(cnx_str)
+
+        with engine.connect() as con:
+          rs = con.execute("SELECT table_name FROM information_schema.tables")
+          for row in rs:
+              print(row)
+      env:
+        DB_CONNECTION_STRING: "postgres://postgres:postgres_password@postgres:5432/postgres"
