@@ -7,5 +7,7 @@ def test_x():
     engine = create_engine(cnx_str)
 
     with engine.connect() as con:
-        rows = con.execute("SELECT table_name FROM information_schema.tables")
-        assert len(rows) > 1
+        result = con.execute("SELECT table_name FROM information_schema.tables")
+        rows = [x for x in resylt]
+
+    assert len(rows) > 1
