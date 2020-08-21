@@ -14,19 +14,20 @@ jobs:
       postgres:
         image: postgres:12
         env:
-          POSTGRES_USER: postgres_user
-          POSTGRES_PASSWORD: postgres_password
-          POSTGRES_DB: db_test
+          POSTGRES_PASSWORD: postgres
         ports:
-          - 5432/tcp
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+
     - name: Cache pip install
       id: cache-pip
       uses: actions/cache@v2
@@ -36,6 +37,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-pip-
           ${{ runner.os }}-
+
     - name: Install dependencies
       if: ${{steps.cache-pip.outputs.cache-hit}} != 'true'
       run: |
@@ -46,10 +48,4 @@ jobs:
       run: |
         pytest
       env:
-        # use postgres for the host here because we have specified a contaienr for the job.
-        # If we were running the job on the VM this would be localhost
-        PG_HOST: postgres
-        PG_USER: postgres_user
-        PG_DATABASE: db_test
-        PG_PASSWORD: postgres_password
-        PG_PORT: ${{ job.services.postgres.ports['5432'] }}
+        TEST_DATABASE_URL: postgresql://postgres:postgres@localhost:5432/pytest_test
