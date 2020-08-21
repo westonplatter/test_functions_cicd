@@ -10,4 +10,4 @@ def test_x():
         result = con.execute("SELECT table_name FROM information_schema.tables")
         rows = [x for x in result]
 
-    assert len(rows) > 2
+    assert len(rows) > 3
