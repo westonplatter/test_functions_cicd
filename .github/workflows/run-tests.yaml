@@ -20,11 +20,6 @@ jobs:
         ports:
           - 5432/tcp
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-      # redis:
-      #   image: redis:latest
-      #   ports:
-      #     - 6379/tcp
-
 
     steps:
     - uses: actions/checkout@v2
@@ -50,3 +45,11 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+      env:
+        # use postgres for the host here because we have specified a contaienr for the job.
+        # If we were running the job on the VM this would be localhost
+        PG_HOST: postgres
+        PG_USER: postgres_user
+        PG_DATABASE: db_test
+        PG_PASSWORD: postgres_password
+        PG_PORT: ${{ job.services.postgres.ports['5432'] }}

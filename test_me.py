@@ -1,7 +1,15 @@
+from os import environ
+
 from sqlalchemy import create_engine
 
 def test_x():
-    cnx_str = "postgres://postgres_user:postgres_password@postgres:5432/db_test"
+    u = environ.get("PG_USER")
+    p = environ.get("PG_PASSWORD")
+    h = environ.get("PG_HOST")
+    port = environ.get("PG_PORT")
+    db = environ.get("PG_DATABASE")
+
+    cnx_str = f"postgres://{PG_USER}:{PG_PASSWORD}@{PG_HOST}:{PG_PORT}/{PG_DATABASE}"
     engine = create_engine(cnx_str)
 
     with engine.connect() as con:
