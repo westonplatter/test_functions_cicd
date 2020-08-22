@@ -37,7 +37,9 @@ jobs:
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          python --version
+          python -m pip install --upgrade pip
+          if [ -f functions/requirements.txt ]; then pip install -r functions/requirements.txt; fi
+          if [ -f functions/dev-requirements.txt ]; then pip install -r functions/dev-requirements.txt; fi
 
       # - uses: actions/checkout@v2
       #
